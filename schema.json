@@ -18,7 +18,7 @@
       "description": "The prompt or instructions to be executed when the command is invoked. May contain placeholders like %s or other command references",
       "minLength": 1
     },
-    "argv": {
+    "args": {
       "type": "object",
       "description": "Optional arguments definition for the command",
       "additionalProperties": {
