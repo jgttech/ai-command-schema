@@ -18,7 +18,7 @@ A JSON Schema for defining structured AI commands using YAML. This schema helps 
 
 command: :format
 description: Format code and commit changes
-postcommands:
+post:
   - :save
 prompt: |
   Review all code in the repository and apply formatting rules.
@@ -70,8 +70,11 @@ command: :command-name      # Required: Command identifier
 description: What this does # Optional: Human-readable description
 examples:                   # Optional: Usage examples
   - ":command-name arg"
-precommands:                # Optional: Run before main command
-  - :validate
+pre:                        # Optional: Run before main command
+  - :validate               # Simple format
+  - command: :backup        # Complex format with error handling
+    continue_on_failure: true
+    on_failure: :log-error
 argv:                       # Optional: Argument definitions
   name:
     type: string
@@ -81,8 +84,10 @@ output:                     # Optional: Output specifications
   format: plain_text        # Defaults to plain_text
   constraints:
     - "Specific requirements"
-postcommands:               # Optional: Run after main command
-  - :save
+post:                       # Optional: Run after main command
+  - :save                   # Simple format
+  - command: :notify        # Complex format
+    on_success: :celebrate
 prompt: |                   # Required: Instructions for AI
   Your command instructions here.
 ```
@@ -102,9 +107,10 @@ Alternative prefixes (`@`, `#`, `/`, `!`, `$`) either conflict with existing con
 
 ## Features
 
-- **Command Chaining** - Use `precommands` and `postcommands` for clear workflows
+- **Command Chaining** - Use `pre` and `post` for clear workflows with optional error handling
 - **Flexible Arguments** - Support for positional, named, and flag-style arguments
 - **Output Control** - Specify format (plain_text, markdown, json, python, etc.) and constraints
+- **Error Handling** - Control flow with `continue_on_failure`, `on_failure`, and `on_success`
 - **Validation Hints** - Tell AI when files must exist before execution
 - **Usage Examples** - Show typical invocations inline
 - **Strict Validation** - No additional properties allowed; schema catches typos

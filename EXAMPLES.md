@@ -180,14 +180,14 @@ prompt: |
 
 ## Command Chaining
 
-### Format and Save
+### Simple Command Chaining
 
 ```yaml
 # yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/schema.json
 
 command: :format
 description: Format repository code and commit changes
-postcommands:
+post:
   - :save
 prompt: |
   Review all code in the repository and apply formatting rules:
@@ -201,6 +201,46 @@ prompt: |
   After formatting, generate a commit message.
 ```
 
+### Advanced Error Handling
+
+```yaml
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/schema.json
+
+command: :deploy-safe
+description: Deploy with comprehensive error handling
+examples:
+  - ":deploy-safe staging"
+  - ":deploy-safe production"
+pre:
+  - command: :validate
+    continue_on_failure: false
+    on_failure: :notify-failure
+    on_success: :log-validation-success
+  - command: :backup
+    continue_on_failure: true  # Continue even if backup fails
+    on_failure: :log-backup-warning
+  - :test  # Simple format - fails fast
+argv:
+  environment:
+    type: string
+    format: positional
+    required: true
+    description: Target environment
+post:
+  - command: :update-docs
+    on_success: :notify-success
+    on_failure: :rollback
+  - :cleanup
+prompt: |
+  Deploy the application to %s environment.
+  
+  Steps:
+  1. Build the application
+  2. Run database migrations if needed
+  3. Deploy to target environment
+  4. Verify deployment health
+```
+
 ### Validate, Deploy, Notify
 
 ```yaml
@@ -211,7 +251,7 @@ description: Deploy application with validation and notification
 examples:
   - ":deploy staging"
   - ":deploy production"
-precommands:
+pre:
   - :validate
   - :test
 argv:
@@ -220,7 +260,7 @@ argv:
     format: positional
     required: true
     description: Target environment (staging, production)
-postcommands:
+post:
   - :save
   - :notify
 prompt: |
@@ -245,7 +285,7 @@ command: :review-pr
 description: Complete pull request review workflow
 examples:
   - ":review-pr feature/user-auth"
-precommands:
+pre:
   - :lint
   - :test
   - :security-scan
@@ -261,7 +301,7 @@ output:
     - "Use PR review template format"
     - "Include approval/changes requested recommendation"
     - "Categorize feedback by severity"
-postcommands:
+post:
   - :update-pr-status
 prompt: |
   Perform a comprehensive code review for branch: %s
@@ -302,7 +342,7 @@ argv:
     format: flag
     default: false
     description: Include rollback script
-precommands:
+pre:
   - :validate-schema
 output:
   format: sql
@@ -311,7 +351,7 @@ output:
     - "Add comments explaining complex operations"
     - "Use transactions where appropriate"
     - "Include safety checks"
-postcommands:
+post:
   - :save
 prompt: |
   Generate a database migration for: %s
@@ -337,7 +377,7 @@ prompt: |
 
 command: :docs
 description: Generate comprehensive project documentation
-precommands:
+pre:
   - :analyze-codebase
 output:
   format: markdown
@@ -346,7 +386,7 @@ output:
     - "Include code examples"
     - "Add table of contents"
     - "Use clear headings and sections"
-postcommands:
+post:
   - :save
 prompt: |
   Generate comprehensive documentation for the project:
@@ -453,7 +493,35 @@ prompt: |
 1. **Start simple** - Begin with basic command + prompt, add complexity as needed
 2. **Use examples** - Show typical invocations to clarify usage
 3. **Be specific in constraints** - Clear output requirements help AI deliver what you want
-4. **Chain thoughtfully** - Use pre/postcommands to create clear workflows
+4. **Chain thoughtfully** - Use pre/post to create clear workflows
 5. **Validate inputs** - Use the `validation.exists` for file paths
 6. **Document thoroughly** - Add descriptions to help others (and future you) understand intent
 7. **Test iteratively** - Start with a simple version and refine based on results
+
+## Error Handling Best Practices
+
+1. **Keep it simple** - Use simple command arrays when you don't need error handling
+2. **Fail-fast by default** - Don't use `continue_on_failure: true` unless you have a good reason
+3. **Validate commands exist** - AI will check that referenced commands exist and warn you
+4. **Handle failures explicitly** - Use `on_failure` to define what happens, don't rely on AI improvisation
+5. **Report, don't recover** - If `on_failure`/`on_success` commands fail, AI reports it clearly but doesn't try to fix it
+6. **You own the flow** - The schema provides structure, but you define the logic. AI just executes and reports.
+
+**Example of good error handling:**
+```yaml
+pre:
+  - command: :validate
+    on_failure: :log-validation-error  # Clear, explicit failure handling
+  - command: :backup
+    continue_on_failure: true          # Backup is nice-to-have
+    on_failure: :log-backup-warning
+```
+
+**Example of over-complication (avoid this):**
+```yaml
+pre:
+  - command: :step1
+    on_success: :step2
+    on_failure: :step3
+  # This creates a confusing execution tree - use sequential pre array instead
+```

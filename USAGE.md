@@ -52,29 +52,61 @@ This guide explains how to use the AI Commands Schema to define custom AI comman
     - ":format src/main.py --verbose"
   ```
 
-#### `precommands`
-- **Type:** array of command names (strings starting with `:`)
+#### `pre`
+- **Type:** array of strings or objects
 - **Purpose:** Commands to execute BEFORE running this command's prompt
 - **Execution:** Runs in array order
 - **Use cases:** Validation, setup, preparation
-- **Example:**
-  ```yaml
-  precommands:
-    - :validate
-    - :backup
-  ```
 
-#### `postcommands`
-- **Type:** array of command names (strings starting with `:`)
+**Simple format:**
+```yaml
+pre:
+  - :validate
+  - :backup
+```
+
+**Complex format with error handling:**
+```yaml
+pre:
+  - command: :validate
+    continue_on_failure: false       # Stop if this fails (default)
+    on_failure: :log-error          # Run this command if validation fails
+    on_success: :update-status      # Run this command if validation succeeds
+  - :test  # Can mix simple and complex formats
+```
+
+**Fields for complex format:**
+- `command` (required): The command to execute
+- `continue_on_failure` (optional, default `false`): Whether to continue if this command fails
+- `on_failure` (optional): Command to execute if this fails. AI validates this command exists.
+- `on_success` (optional): Command to execute if this succeeds. AI validates this command exists.
+
+**Important:** AI will validate that all referenced commands (including in `on_failure`/`on_success`) exist and inform you if they don't. If `on_failure` or `on_success` commands themselves fail, AI will report the failure clearly but won't attempt complex recovery.
+
+#### `post`
+- **Type:** array of strings or objects
 - **Purpose:** Commands to execute AFTER running this command's prompt
 - **Execution:** Runs in array order
 - **Use cases:** Cleanup, saving, notifications
-- **Example:**
-  ```yaml
-  postcommands:
-    - :save
-    - :notify-team
-  ```
+
+**Simple format:**
+```yaml
+post:
+  - :save
+  - :notify-team
+```
+
+**Complex format with error handling:**
+```yaml
+post:
+  - command: :save
+    continue_on_failure: true        # Continue even if save fails
+    on_failure: :log-save-error
+  - command: :notify
+    on_success: :celebrate
+```
+
+Same field structure as `pre` - supports both simple strings and complex objects with error handling.
 
 #### `argv`
 - **Type:** object (argument definitions)
@@ -130,14 +162,15 @@ This guide explains how to use the AI Commands Schema to define custom AI comman
 
 ## Command Chaining
 
-Commands can form workflows using `precommands` and `postcommands`:
+Commands can form workflows using `pre` and `post`:
 
+**Simple workflow:**
 ```yaml
 command: :deploy
-precommands:
+pre:
   - :validate    # Runs first
   - :test        # Runs second
-postcommands:
+post:
   - :save        # Runs after deploy
   - :notify      # Runs last
 prompt: |
@@ -145,6 +178,37 @@ prompt: |
 ```
 
 **Execution order:** `:validate` → `:test` → deploy prompt → `:save` → `:notify`
+
+**Advanced workflow with error handling:**
+```yaml
+command: :deploy
+pre:
+  - command: :validate
+    continue_on_failure: false
+    on_failure: :notify-failure
+  - command: :backup
+    continue_on_failure: true  # Continue even if backup fails
+  - :test
+post:
+  - command: :update-docs
+    on_success: :notify-success
+    on_failure: :rollback
+prompt: |
+  Deploy the application to production
+```
+
+**Execution flow:**
+1. Run `:validate` → if fails, run `:notify-failure`, then **stop**
+2. Run `:backup` → if fails, **continue anyway**
+3. Run `:test` → if fails, **stop**
+4. Run main deploy prompt
+5. Run `:update-docs` → if succeeds, run `:notify-success`; if fails, run `:rollback`
+
+**Key principles:**
+- AI validates all referenced commands exist before execution
+- If `on_failure`/`on_success` commands fail, AI reports the issue but doesn't attempt recovery
+- Default is `continue_on_failure: false` (fail-fast is safer)
+- You control the flow logic; AI just executes and reports
 
 ## Placeholders
 
