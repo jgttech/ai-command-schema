@@ -1,6 +1,6 @@
 {
   "$schema": "http://json-schema.org/draft-07/schema#",
-  "$id": "https://raw.githubusercontent.com/jgttech/ai-command-schema/main/ai-command-schema.json",
+  "$id": "https://raw.githubusercontent.com/jgttech/ai-command-schema/main/schema.json",
   "title": "AI Command Definition",
   "description": "Schema for YAML files defining AI commands. For usage documentation, see USAGE.md. For examples, see EXAMPLES.md in the repository.",
   "$comment": "Repository: https://github.com/jgttech/ai-command-schema - This schema helps AI assistants understand structured command definitions. Documentation files: USAGE.md (usage guide), EXAMPLES.md (practical examples), README.md (overview)",

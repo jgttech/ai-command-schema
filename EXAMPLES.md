@@ -15,7 +15,7 @@ Real-world examples of AI command definitions using this schema.
 ### Simple Text Transformation
 
 ```yaml
-# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/ai-command-schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/schema.json
 
 command: :summarize
 description: Summarize the provided text
@@ -28,7 +28,7 @@ prompt: |
 ### Code Review
 
 ```yaml
-# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/ai-command-schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/schema.json
 
 command: :review
 description: Review code for quality and best practices
@@ -52,7 +52,7 @@ prompt: |
 ### File Formatter
 
 ```yaml
-# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/ai-command-schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/schema.json
 
 command: :align
 description: Align code with project standards
@@ -79,7 +79,7 @@ prompt: |
 ### Test Generator
 
 ```yaml
-# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/ai-command-schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/schema.json
 
 command: :test
 description: Generate unit tests for code
@@ -122,7 +122,7 @@ prompt: |
 ### Commit Message Generator
 
 ```yaml
-# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/ai-command-schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/schema.json
 
 command: :save
 description: Generate conventional commit message
@@ -152,7 +152,7 @@ prompt: |
 ### API Documentation
 
 ```yaml
-# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/ai-command-schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/schema.json
 
 command: :document-api
 description: Generate API documentation
@@ -183,7 +183,7 @@ prompt: |
 ### Format and Save
 
 ```yaml
-# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/ai-command-schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/schema.json
 
 command: :format
 description: Format repository code and commit changes
@@ -204,7 +204,7 @@ prompt: |
 ### Validate, Deploy, Notify
 
 ```yaml
-# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/ai-command-schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/schema.json
 
 command: :deploy
 description: Deploy application with validation and notification
@@ -239,7 +239,7 @@ prompt: |
 ### Full Code Review Pipeline
 
 ```yaml
-# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/ai-command-schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/schema.json
 
 command: :review-pr
 description: Complete pull request review workflow
@@ -284,7 +284,7 @@ prompt: |
 ### Database Migration Generator
 
 ```yaml
-# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/ai-command-schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/schema.json
 
 command: :migrate
 description: Generate database migration from schema changes
@@ -333,7 +333,7 @@ prompt: |
 ### Documentation Generator
 
 ```yaml
-# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/ai-command-schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/schema.json
 
 command: :docs
 description: Generate comprehensive project documentation
@@ -387,7 +387,7 @@ prompt: |
 ### Python Linter
 
 ```yaml
-# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/ai-command-schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/schema.json
 
 command: :lint-python
 description: Lint Python code using project standards
@@ -419,7 +419,7 @@ prompt: |
 ### Rust Error Handler
 
 ```yaml
-# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/ai-command-schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/schema.json
 
 command: :rust-errors
 description: Improve Rust error handling

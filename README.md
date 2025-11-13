@@ -1,7 +1,7 @@
 # AI Command Schema
 
 [![GitHub](https://img.shields.io/badge/github-jgttech%2Fai--command--schema-blue)](https://github.com/jgttech/ai-command-schema)
-[![Schema](https://img.shields.io/badge/schema-JSON%20Schema%20Draft%207-green)](https://raw.githubusercontent.com/jgttech/ai-command-schema/main/ai-command-schema.json)
+[![Schema](https://img.shields.io/badge/schema-JSON%20Schema%20Draft%207-green)](https://raw.githubusercontent.com/jgttech/ai-command-schema/main/schema.json)
 
 A JSON Schema for defining structured AI commands using YAML. This schema helps you create clear, validated command definitions that AI assistants can easily understand and execute.
 
@@ -9,12 +9,12 @@ A JSON Schema for defining structured AI commands using YAML. This schema helps 
 
 - **[USAGE.md](USAGE.md)** - Complete usage guide and field reference
 - **[EXAMPLES.md](EXAMPLES.md)** - Real-world command examples
-- **[ai-command-schema.json](ai-command-schema.json)** - The schema itself
+- **[schema.json](schema.json)** - The schema itself
 
 ## Quick Example
 
 ```yaml
-# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/ai-command-schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/schema.json
 
 command: :format
 description: Format code and commit changes
@@ -53,7 +53,7 @@ This schema is designed with AI-first principles to maximize clarity and minimiz
 Add this line to the top of your YAML command files:
 
 ```yaml
-# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/ai-command-schema.json
+# yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/schema.json
 ```
 
 ### IDE Setup
@@ -134,7 +134,7 @@ This schema is released under the MIT License. See the repository for details.
 ## Links
 
 - **Repository:** https://github.com/jgttech/ai-command-schema
-- **Schema URL:** https://raw.githubusercontent.com/jgttech/ai-command-schema/main/ai-command-schema.json
+- **Schema URL:** https://raw.githubusercontent.com/jgttech/ai-command-schema/main/schema.json
 - **Usage Guide:** [USAGE.md](USAGE.md)
 - **Examples:** [EXAMPLES.md](EXAMPLES.md)
 

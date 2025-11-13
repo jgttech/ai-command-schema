@@ -7,7 +7,7 @@ This guide explains how to use the AI Commands Schema to define custom AI comman
 1. **Create a command file** (e.g., `my-command.yml`)
 2. **Add schema reference** at the top:
    ```yaml
-   # yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/ai-command-schema.json
+   # yaml-language-server: $schema=https://raw.githubusercontent.com/jgttech/ai-command-schema/main/schema.json
    ```
 3. **Define your command** with at minimum:
    ```yaml
@@ -191,7 +191,7 @@ Using [ajv-cli](https://github.com/ajv-validator/ajv-cli):
 
 ```bash
 npm install -g ajv-cli ajv-formats
-ajv validate -s ai-command-schema.json -d "*.yml"
+ajv validate -s schema.json -d "*.yml"
 ```
 
 ### Python
@@ -203,7 +203,7 @@ import jsonschema
 from urllib.request import urlopen
 
 # Load schema from GitHub
-schema_url = "https://raw.githubusercontent.com/jgttech/ai-command-schema/main/ai-command-schema.json"
+schema_url = "https://raw.githubusercontent.com/jgttech/ai-command-schema/main/schema.json"
 with urlopen(schema_url) as response:
     schema = json.loads(response.read())
 
