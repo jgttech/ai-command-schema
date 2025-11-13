@@ -1,0 +1,145 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "$id": "https://raw.githubusercontent.com/jgttech/ai-command-schema/main/ai-command-schema.json",
+  "title": "AI Command Definition",
+  "description": "Schema for YAML files defining AI commands. For usage documentation, see USAGE.md. For examples, see EXAMPLES.md in the repository.",
+  "$comment": "Repository: https://github.com/jgttech/ai-command-schema - This schema helps AI assistants understand structured command definitions. Documentation files: USAGE.md (usage guide), EXAMPLES.md (practical examples), README.md (overview)",
+  "type": "object",
+  "required": ["command", "prompt"],
+  "properties": {
+    "command": {
+      "type": "string",
+      "pattern": "^:[a-zA-Z][a-zA-Z0-9_-]*$",
+      "description": "The command name, must start with a colon followed by alphanumeric characters, underscores, or hyphens",
+      "examples": [":align", ":format", ":save", ":test"]
+    },
+    "prompt": {
+      "type": "string",
+      "description": "The prompt or instructions to be executed when the command is invoked. May contain placeholders like %s or other command references",
+      "minLength": 1
+    },
+    "argv": {
+      "type": "object",
+      "description": "Optional arguments definition for the command",
+      "additionalProperties": {
+        "type": "object",
+        "properties": {
+          "type": {
+            "type": "string",
+            "enum": ["string", "number", "boolean", "array", "object"],
+            "description": "The data type of the argument"
+          },
+          "format": {
+            "type": "string",
+            "enum": ["positional", "named", "flag"],
+            "description": "How the argument should be passed to the command",
+            "default": "positional"
+          },
+          "required": {
+            "type": "boolean",
+            "description": "Whether this argument is required",
+            "default": false
+          },
+          "default": {
+            "description": "Default value for the argument if not provided"
+          },
+          "description": {
+            "type": "string",
+            "description": "Human-readable description of the argument"
+          },
+          "validation": {
+            "type": "object",
+            "description": "Optional validation hints for the argument",
+            "properties": {
+              "exists": {
+                "type": "boolean",
+                "description": "For path arguments, whether the file/directory must exist before command execution"
+              }
+            },
+            "additionalProperties": false
+          }
+        },
+        "required": ["type"]
+      }
+    },
+    "description": {
+      "type": "string",
+      "description": "Optional human-readable description of what the command does"
+    },
+    "examples": {
+      "type": "array",
+      "items": {
+        "type": "string"
+      },
+      "description": "Optional usage examples showing how to invoke the command",
+      "minItems": 1
+    },
+    "output": {
+      "type": "object",
+      "description": "Optional output format specifications and constraints",
+      "properties": {
+        "format": {
+          "type": "string",
+          "enum": [
+            "plain_text",
+            "markdown",
+            "json",
+            "yaml",
+            "toml",
+            "xml",
+            "html",
+            "css",
+            "javascript",
+            "typescript",
+            "python",
+            "java",
+            "kotlin",
+            "c",
+            "cpp",
+            "go",
+            "rust",
+            "zig",
+            "odin",
+            "ruby",
+            "php",
+            "elixir",
+            "lua",
+            "swift",
+            "dart",
+            "bash",
+            "sql"
+          ],
+          "description": "Expected output format. Use simple, clear format names that are easily understood.",
+          "default": "plain_text"
+        },
+        "constraints": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "List of constraints for the output (e.g., 'no AI signature', 'under 80 characters')"
+        }
+      },
+      "additionalProperties": false
+    },
+    "precommands": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^:[a-zA-Z][a-zA-Z0-9_-]*$"
+      },
+      "description": "Optional list of commands to execute BEFORE running this command's prompt",
+      "minItems": 1
+    },
+    "postcommands": {
+      "type": "array",
+      "items": {
+        "type": "string",
+        "pattern": "^:[a-zA-Z][a-zA-Z0-9_-]*$"
+      },
+      "description": "Optional list of commands to execute AFTER running this command's prompt",
+      "minItems": 1
+    }
+  },
+  "additionalProperties": false
+}
